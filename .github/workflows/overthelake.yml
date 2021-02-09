@@ -6,11 +6,7 @@ on:
         required: true
       transferId:
         required: true
-      source:
-        required: true
-      destination:
-        required: true
-      size:
+      args:
         required: true
 jobs:
   transfer:
@@ -23,7 +19,7 @@ jobs:
       - id: rclone
         uses: docker://rclone/rclone:latest
         with:
-          args: --config=rclone.conf --max-transfer=${{ github.event.inputs.size }}b --cutoff-mode=cautious copy "${{ github.event.inputs.source }}" "${{ github.event.inputs.destination }}"
+          args: ${{ github.event.inputs.args }}
         continue-on-error: true
       - id: webhook
         env:
